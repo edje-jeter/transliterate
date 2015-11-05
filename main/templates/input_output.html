@@ -1,0 +1,109 @@
+
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+<!-- Primary CSS file -->
+<link href="{% static 'css/transliterate_css.css' %}" rel="stylesheet">
+
+{% block body %}
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1
+                        col-md-12
+                        col-sm-11
+                        col-xs-12" 
+                >
+                {% crispy form_1 %}
+            </div>
+
+            <div>
+                <br><br>
+                <input id="english-input" type="text">
+                </input>
+            </div>
+
+            <div>
+                <p id="deseret-output">
+                </p>
+                <br><br>
+            </div>
+
+        </div>
+        <div class="row">
+            <h5>
+                {{ unic_str }}
+            </h5>
+
+            <strong>arpa_phonemes:</strong> <br>
+            {% for word, value in arpa_phonemes.items %}
+                {{ word }}: {{ value }}<br>
+            {% endfor %}<br>
+        </div>
+    </div>
+
+For now, the transliterator:<br>
+-- ignores hard returns (it registers them in the input but doesn't convert them to br in the HTML<br>
+-- can handle some punctuation: , . ? ! ' " ( )<br>
+-- but uses the font-mapping of AdamicBee for other punctuation, like: [ ] / ; : { } | @#$%^* etc<br>
+-- if it doesn't recognize a word it returns a series of periods (.) corresponding to the number of characters (in English) in the original word<br>
+-- has a thoroughly unreliable "engine" to convert English phonetics into Deseret<br>
+-- can handle all-caps words and no caps words and initial-caps words but not any other combinations of capitalization (eg, McDonalds) <br>
+<br>
+<br>
+Future iterations: in addition to the continuous output string, place each output word in a separate box with the original English, IPA, Arpabet, Deseret, and alternatives stacked vertically. By putting the text in individual boxes they can resize dynamically. 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+
+        $('#english-input').on('keyup', function() {
+
+            $('#deseret-output').text('');
+            $.ajax({
+                type: 'GET',
+                url: '/json_response/',
+                data: { search: $('#english-input').val() },
+                error: function() {
+                    //what to do if there is an error
+                },
+                success: function(data) {
+                    console.log(data[0])
+
+                    for(i = 0; i < data.length; i++) {
+                        $('#deseret-output').append(data[i]);
+                    }
+                }
+
+            });
+        });
+
+        // // When you type something into the input box, something appears in 
+        // // the paragraph;
+        // $('#test-input').on('keyup', function() {
+        //     $('#output').text(''); // clears the output after every keyup
+        //     $('#output').append($('#test-input').val());
+        // });
+
+        // // Add element ('Example JS 1') to list every time you click 'Click Me JS'
+        // document.getElementById('clickme-js').addEventListener('click', function(){
+        //     ul_var = document.getElementById('list_id_1');
+        //     li_var = document.createElement('li');
+        //     li_var.appendChild(document.createTextNode('Example JS 1'));
+        //     ul_var.appendChild(li_var);
+        // });
+
+        // // Add element ('Example JQ 1') to list every time you click on 'Click Me JQ'
+        // $('#clickme-jq').on('click', function() {
+        //     $('#list_id_1').append('<li>Example JQ 1</li>')
+        // });
+
+    </script>
+
+
+
+
+{% endblock body %}
+
+<p style="font-size:30px"></p>
