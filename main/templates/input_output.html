@@ -24,8 +24,8 @@
             </div>
 
             <div>
-                <p id="deseret-output">
-                </p>
+                <h5 id="deseret-output">
+                </h5>
                 <br><br>
             </div>
 
@@ -64,7 +64,7 @@ Future iterations: in addition to the continuous output string, place each outpu
             $.ajax({
                 type: 'GET',
                 url: '/json_response/',
-                data: { search: $('#english-input').val() },
+                data: { input: $('#english-input').val() },
                 error: function() {
                     //what to do if there is an error
                 },
@@ -84,19 +84,6 @@ Future iterations: in addition to the continuous output string, place each outpu
         // $('#test-input').on('keyup', function() {
         //     $('#output').text(''); // clears the output after every keyup
         //     $('#output').append($('#test-input').val());
-        // });
-
-        // // Add element ('Example JS 1') to list every time you click 'Click Me JS'
-        // document.getElementById('clickme-js').addEventListener('click', function(){
-        //     ul_var = document.getElementById('list_id_1');
-        //     li_var = document.createElement('li');
-        //     li_var.appendChild(document.createTextNode('Example JS 1'));
-        //     ul_var.appendChild(li_var);
-        // });
-
-        // // Add element ('Example JQ 1') to list every time you click on 'Click Me JQ'
-        // $('#clickme-jq').on('click', function() {
-        //     $('#list_id_1').append('<li>Example JQ 1</li>')
         // });
 
     </script>
