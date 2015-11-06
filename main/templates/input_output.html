@@ -2,6 +2,9 @@
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
 <!-- Primary CSS file -->
 <link href="{% static 'css/transliterate_css.css' %}" rel="stylesheet">
 
@@ -9,39 +12,97 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1
-                        col-md-12
-                        col-sm-11
-                        col-xs-12" 
-                >
-                {% crispy form_1 %}
-            </div>
-
+            <div class="box">
+                
             <div>
-                <br><br>
-                <input id="english-input" type="text">
-                </input>
+                <hr>
+                Enter text in English. Viable pronunciation symbols are: <br>
+                , . ? ! ' " ( )<br>
+                Note that hyphens are not viable at this point.
             </div>
 
-            <div>
-                <h5 id="deseret-output">
-                </h5>
-                <br><br>
+                <div>
+                    <br><br>
+                    <textarea id="english-input"
+                              rows="4"
+                              placeholder="Type English here."
+                              class="col-lg-8 col-lg-offset-0
+                                     col-md-10
+                                     col-sm-11
+                                     col-xs-12"></textarea>
+                    <hr>
+                </div>
+
+                <div class="col-lg-8 col-lg-offset-0
+                            col-md-10
+                            col-sm-11
+                            col-xs-12">
+
+                    <h5 id="deseret-output"></h5>
+                </div>
+
             </div>
-
-        </div>
-        <div class="row">
-            <h5>
-                {{ unic_str }}
-            </h5>
-
-            <strong>arpa_phonemes:</strong> <br>
-            {% for word, value in arpa_phonemes.items %}
-                {{ word }}: {{ value }}<br>
-            {% endfor %}<br>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+
+        $('#english-input').on('keyup', function() {
+
+            input_orig = $('#english-input').val()
+            input_list = $('#english-input').val().split(" ")
+            // console.log("input list: " + input_list)
+            // console.log("input char length: " + input_orig.length)
+            
+            num_words = input_list.length
+            last_word = input_list[num_words - 1]
+            // console.log("# of words separated by a space in input: " + num_words)
+            // console.log("last word: " + last_word)
+
+            // console.log("last char: " + input_orig[input_orig.length - 1])
+            if (input_orig[input_orig.length - 1] == " ") {
+                // console.log("you've hit the first space option")
+                $('#deseret-output').append(" ");
+            } else {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/json_response/',
+                    data: { input: last_word },
+                    error: function() {
+                        //what to do if there is an error
+                    },
+                    success: function(data) {
+                        // console.log("data: " + data);
+
+                        // if (data == ""){
+                            // $('#deseret-output').append(data[0]);
+                            // console.log("You hit the space option.")
+                        // } else {
+                            str = $('#deseret-output').text();
+                            // console.log("str: " + str)
+                            last_s = str.lastIndexOf(" ") + 1;
+                            // console.log("last_s: " + last_s)
+                            str_a = str.substring(0, last_s != -1 ? last_s : str.length);
+                            $('#deseret-output').text(str_a)
+
+                            for(i = 0; i < data.length; i++) {
+                                $('#deseret-output').append(data[i]);
+                            };
+                        // };
+                    }
+                });
+            };
+        });
+
+    </script>
+
+{% endblock body %}
+
+{% comment %}
 For now, the transliterator:<br>
 -- ignores hard returns (it registers them in the input but doesn't convert them to br in the HTML<br>
 -- can handle some punctuation: , . ? ! ' " ( )<br>
@@ -53,14 +114,13 @@ For now, the transliterator:<br>
 <br>
 Future iterations: in addition to the continuous output string, place each output word in a separate box with the original English, IPA, Arpabet, Deseret, and alternatives stacked vertically. By putting the text in individual boxes they can resize dynamically. 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js">
-    </script>
-
     <script type="text/javascript">
 
+        var ticker = true;
         $('#english-input').on('keyup', function() {
 
             $('#deseret-output').text('');
+
             $.ajax({
                 type: 'GET',
                 url: '/json_response/',
@@ -69,28 +129,51 @@ Future iterations: in addition to the continuous output string, place each outpu
                     //what to do if there is an error
                 },
                 success: function(data) {
-                    console.log(data[0])
-
-                    for(i = 0; i < data.length; i++) {
-                        $('#deseret-output').append(data[i]);
-                    }
+                    console.log(data[0]);
+                    bool_eval(data);
+                ticker = true;
                 }
-
             });
         });
 
-        // // When you type something into the input box, something appears in 
-        // // the paragraph;
-        // $('#test-input').on('keyup', function() {
-        //     $('#output').text(''); // clears the output after every keyup
-        //     $('#output').append($('#test-input').val());
-        // });
+        var bool_eval = function(data){
+            if(ticker == true){
+                ticker = false;
+                for(i = 0; i < data.length; i++) {
+                        $('#deseret-output').append(data[i]);
+                };
+            };
+        };
+
+    </script>
+
+// Basic working script
+    <script type="text/javascript">
+
+        $('#english-input').on('keyup', function() {
+
+            $('#deseret-output').text('');
+
+            console.log("eng-input: " + $('#english-input').val())
+
+            $.ajax({
+                type: 'GET',
+                url: '/json_response/',
+                data: { input: $('#english-input').val() },
+                error: function() {
+                    //what to do if there is an error
+                },
+                success: function(data) {
+                    console.log(data[0]);
+                    
+                    for(i = 0; i < data.length; i++) {
+                            $('#deseret-output').append(data[i]);
+                    };
+                }
+            });
+        });
 
     </script>
 
 
-
-
-{% endblock body %}
-
-<p style="font-size:30px"></p>
+{% endcomment %}
