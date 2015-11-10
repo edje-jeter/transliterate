@@ -7,7 +7,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^input_output/$', 'main.views.input_output'),
-    url(r'^json_response/$', 'main.views.json_response'),
+    url(r'^short_text/$', 'main.views.short_text', name='short_text'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

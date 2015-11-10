@@ -14,51 +14,23 @@
         <div class="row">
             <div class="box">
                 
-                <div>
-                    <hr>
-                    Enter text in English. Viable pronunciation symbols are: <br>
-                    , . ? ! ' " ( )<br>
-                    Note that hyphens are not viable at this point.
-                </div>
-
-                <div>
-                    <br><br>
-                    <textarea id="english-input"
-                              rows="4"
-                              placeholder="Type English here."
-                              class="col-lg-8
-                                     col-md-10
-                                     col-sm-11
-                                     col-xs-11"></textarea>
-                </div>
-
-                <div class="col-lg-8
-                            col-md-10
-                            col-sm-11
-                            col-xs-11">
-                    <h5 id="deseret-output"></h5>
-                    <hr>
-                </div>
+            <div>
+                <hr>
+                Enter text in English. Viable pronunciation symbols are: <br>
+                , . ? ! ' " ( )<br>
+                Note that hyphens are not viable at this point.
             </div>
-        </div>
 
-        <div class="row">
-            <div class="box">
-
-                <div>
-                    {% crispy form_1 %}
-                </div>
-
-                <div class="col-lg-8 col-lg-offset-0
-                            col-md-10
-                            col-sm-11
-                            col-xs-11">
-                    <h5>
-                    {{ unic_str }}
-                    </h5>
-                </div>
-
+            <div>
+                {% crispy form_1 %}
             </div>
+
+            <div>
+                <h5>
+                {{ unic_str }}
+                </h5>
+            </div>
+
         </div>
     </div>
 
@@ -71,6 +43,8 @@
 
             input_orig = $('#english-input').val()
             input_list = $('#english-input').val().split(" ")
+            // console.log("input list: " + input_list)
+            // console.log("input char length: " + input_orig.length)
 
             num_words = input_list.length
             last_word = input_list[num_words - 1]
