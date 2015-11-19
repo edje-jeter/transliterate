@@ -8,6 +8,10 @@ h5 {
     font-size: xx-large;
 }
 
+#deseret-output-div {
+    min-height:100px;
+}
+
 .submit-button-mods {
     margin: 15px
 }

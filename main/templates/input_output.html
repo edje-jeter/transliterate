@@ -15,14 +15,14 @@
             <div class="box">
                 
                 <div>
+                    Enter text in English. Viable pronunciation symbols are: , . ? ! ' " ( )<br>
+                    Note that hyphens and non-English and/or accented letters are not viable at this point.<br>
+                    The only capitalization patterns are all-caps, no-caps, or initial caps. Maximum length is 200 characters.
                     <hr>
-                    Enter text in English. Viable pronunciation symbols are: <br>
-                    , . ? ! ' " ( )<br>
-                    Note that hyphens are not viable at this point.
                 </div>
 
                 <div>
-                    <br><br>
+                    <br>
                     <textarea id="english-input"
                               rows="4"
                               placeholder="Type English here."
@@ -32,69 +32,55 @@
                                      col-xs-11"></textarea>
                 </div>
 
-                <div class="col-lg-8
+                <div id="deseret-output-div"
+                     class="col-lg-8
                             col-md-10
                             col-sm-11
                             col-xs-11">
                     <h5 id="deseret-output"></h5>
                     <hr>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="box">
-
-                <div>
-                    {% crispy form_1 %}
-                </div>
-
-                <div class="col-lg-8 col-lg-offset-0
-                            col-md-10
-                            col-sm-11
-                            col-xs-11">
-                    <h5>
-                    {{ unic_str }}
-                    </h5>
-                </div>
 
             </div>
         </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js">
     </script>
 
     <script type="text/javascript">
+// ---- Test 1, Short_text; JS breaks input into words and only translits last word -----
+// ---- Slow; Does not allow for edits ------------------------------
+        // Initialize variables
+        var delayVar = "";
 
-        $('#english-input').on('keyup', function() {
+        // Function to deal with one word at a time
+        function shortText() {
 
-            input_orig = $('#english-input').val()
-            input_list = $('#english-input').val().split(" ")
+            // Turn the input into a single string
+            input_orig = $('#english-input').val();
 
-            num_words = input_list.length
-            last_word = input_list[num_words - 1]
-            // console.log("# of words separated by a space in input: " + num_words)
-            // console.log("last word: " + last_word)
+            // Turn input string into a list of words; split on 
+            // anything that is not an English letter or an apostrophe
+            input_list = $('#english-input').val().split(/[^a-zA-Z']+/);
+            num_words = input_list.length;
+            last_word = input_list[num_words - 1];
 
-            // console.log("last char: " + input_orig[input_orig.length - 1])
-            if (input_orig[input_orig.length - 1] == " ") {
-                // console.log("you've hit the first space option")
-                $('#deseret-output').append(" ");
+            // Test if the last character is a non-letter or non-apostrophe
+            last_char = input_orig[input_orig.length - 1]
+            if (/[^a-zA-Z']+/.test(last_char)) {
+                $('#deseret-output').append(last_char);
             } else {
 
                 $.ajax({
                     type: 'GET',
                     url: '/short_text/',
                     data: { input: last_word },
-                    error: function() {
-                        //what to do if there is an error
-                    },
+                    error: function() {},
                     success: function(data) {
                         str = $('#deseret-output').text();
-                        // console.log("str: " + str)
                         last_s = str.lastIndexOf(" ") + 1;
-                        // console.log("last_s: " + last_s)
                         str_a = str.substring(0, last_s != -1 ? last_s : str.length);
                         $('#deseret-output').text(str_a)
 
@@ -104,8 +90,33 @@
                     }
                 });
             };
-        });
+        }
 
+        // Function to deal with the whole input at one time
+        function midText() {
+
+            // $('#deseret-output').text('');
+            
+            in_orig = $('#english-input').val();
+
+            $.ajax({
+                type: 'GET',
+                url: '/mid_text/',
+                data: {input: in_orig},
+                error: function() {},
+                success: function(data) {
+                    $('#deseret-output').text(data)
+                }
+            });
+        }
+
+        // Logic to deal with events, timing, etc
+        $('#english-input').on('keydown', function() {
+            clearTimeout(delayVar);
+            shortText();
+            delayVar = setTimeout(midText, 1000);
+        });
+        
     </script>
 
 {% endblock body %}

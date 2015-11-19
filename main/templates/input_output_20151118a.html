@@ -1,0 +1,144 @@
+
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Primary CSS file -->
+<link href="{% static 'css/transliterate_css.css' %}" rel="stylesheet">
+
+{% block body %}
+    
+    <div class="container">
+        <div class="row">
+            <div class="box">
+                
+                <div>
+                    Enter text in English. Viable pronunciation symbols are: , . ? ! ' " ( )<br>
+                    Note that hyphens and non-English and/or accented letters are not viable at this point.<br>
+                    The only capitalization patterns are all-caps, no-caps, or initial caps. Maximum length is 200 characters.
+                    <hr>
+                </div>
+
+                <div>
+                    <br>
+                    <textarea id="english-input"
+                              rows="4"
+                              placeholder="Type English here."
+                              class="col-lg-8
+                                     col-md-10
+                                     col-sm-11
+                                     col-xs-11"></textarea>
+                </div>
+
+                <div class="col-lg-8
+                            col-md-10
+                            col-sm-11
+                            col-xs-11">
+                    <h5 id="deseret-output"></h5>
+                    <hr>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="box">
+
+                <div>
+                    {% crispy form_1 %}
+                </div>
+
+                <div class="col-lg-8 col-lg-offset-0
+                            col-md-10
+                            col-sm-11
+                            col-xs-11">
+                    <h5>
+                    {{ wunic_str }}
+                    <hr>
+                    {{ unic_str }}
+                    </h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js">
+    </script>
+
+    <script type="text/javascript">
+// ---- Test 1, Short_text; JS breaks input into words and only translits last word -----
+// ---- Slow; Does not allow for edits ------------------------------
+        $('#english-input').on('keyup', function() {
+
+            // Turn the input into a single string
+            input_orig = $('#english-input').val();
+
+            // Turn input string into a list of words; split on 
+            // anything that is not an English letter or an apostrophe
+            input_list = $('#english-input').val().split(/[^a-zA-Z']+/);
+            num_words = input_list.length;
+            last_word = input_list[num_words - 1];
+
+            // Test if the last character is a non-letter or non-apostrophe
+            last_char = input_orig[input_orig.length - 1]
+            if (/[^a-zA-Z']+/.test(last_char)) {
+                $('#deseret-output').append(last_char);
+            } else {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/short_text/',
+                    data: { input: last_word },
+                    error: function() {},
+                    success: function(data) {
+                        str = $('#deseret-output').text();
+                        last_s = str.lastIndexOf(" ") + 1;
+                        str_a = str.substring(0, last_s != -1 ? last_s : str.length);
+                        $('#deseret-output').text(str_a)
+
+                        for(i = 0; i < data.length; i++) {
+                            $('#deseret-output').append(data[i]);
+                        };
+                    }
+                });
+            };
+        });
+
+// ---- Re-translit entire input on every keyup ---------------------
+
+        // $('#english-input').on('keyup', function() {
+
+        //     $('#deseret-output').text('');
+            
+        //     in_orig = $('#english-input').val();
+        //     console.log("in orig: " + in_orig)
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/mid_text/',
+        //         data: {input: in_orig},
+        //         error: function() {},
+        //         success: function(data) {
+        //             $('#deseret-output').append(data)
+        //         }
+        //     });
+        // });
+
+    </script>
+
+{% endblock body %}
+
+{% comment %}
+For now, the transliterator:<br>
+-- ignores hard returns (it registers them in the input but doesn't convert them to br in the HTML<br>
+-- can handle some punctuation: , . ? ! ' " ( )<br>
+-- but uses the font-mapping of AdamicBee for other punctuation, like: [ ] / ; : { } | @#$%^* etc<br>
+-- if it doesn't recognize a word it returns a series of periods (.) corresponding to the number of characters (in English) in the original word<br>
+-- has a thoroughly unreliable "engine" to convert English phonetics into Deseret<br>
+-- can handle all-caps words and no caps words and initial-caps words but not any other combinations of capitalization (eg, McDonalds) <br>
+<br>
+<br>
+Future iterations: in addition to the continuous output string, place each output word in a separate box with the original English, IPA, Arpabet, Deseret, and alternatives stacked vertically. By putting the text in individual boxes they can resize dynamically. 
+{% endcomment %}
