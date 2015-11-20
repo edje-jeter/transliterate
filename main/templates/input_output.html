@@ -56,7 +56,7 @@
         var delayVar = "";
 
         // Function to deal with one word at a time
-        function shortText() {
+        function continuousProcess() {
 
             // Turn the input into a single string
             input_orig = $('#english-input').val();
@@ -75,7 +75,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '/short_text/',
+                    url: '/continuous_process/',
                     data: { input: last_word },
                     error: function() {},
                     success: function(data) {
@@ -93,15 +93,13 @@
         }
 
         // Function to deal with the whole input at one time
-        function midText() {
-
-            // $('#deseret-output').text('');
+        function batchProcess() {
             
             in_orig = $('#english-input').val();
 
             $.ajax({
                 type: 'GET',
-                url: '/mid_text/',
+                url: '/batch_process/',
                 data: {input: in_orig},
                 error: function() {},
                 success: function(data) {
@@ -113,8 +111,8 @@
         // Logic to deal with events, timing, etc
         $('#english-input').on('keydown', function() {
             clearTimeout(delayVar);
-            shortText();
-            delayVar = setTimeout(midText, 1000);
+            continuousProcess();
+            delayVar = setTimeout(batchProcess, 500);
         });
         
     </script>

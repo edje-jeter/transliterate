@@ -7,8 +7,8 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^input_output/$', 'main.views.input_output'),
-    url(r'^short_text/$', 'main.views.short_text', name='short_text'),
-    url(r'^mid_text/$', 'main.views.mid_text', name='mid_text'),
+    url(r'^continuous_process/$', 'main.views.continuous_process', name='continuous_process'),
+    url(r'^batch_process/$', 'main.views.batch_process', name='batch_process'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
