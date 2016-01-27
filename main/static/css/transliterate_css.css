@@ -1,17 +1,274 @@
 
-@font-face { font-family: AdamicBee; 
-             src: url('_AdamicBee3_0.ttf'); 
-            } 
+    .hidden {
+        display: none;
+    }
 
-h5 {
-    font-family: AdamicBee, serif;
-    font-size: xx-large;
-}
+/* ---- English Input ---- */
+    #english-input {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
 
-#deseret-output-div {
-    min-height:100px;
-}
+/* ---- Output Section */
+    @font-face { font-family: AdamicBee; 
+                 src: url('_AdamicBee3_0.ttf'); 
+                } 
 
-.submit-button-mods {
-    margin: 15px
-}
+    h5 {
+        /*font-family: AdamicBee, serif;*/
+        font-size: 30px;
+    }
+
+    #deseret-output-div {
+        min-height: 166px;
+        background-color: White;
+        border: solid 1px Black;
+    }
+
+/* ---- Name / Arpabet Entry Page ------------------------------- */
+/* ---- Body and Backgrounds */
+    body {
+        background-color: Azure;
+    }
+
+/* ---- Title ---- */
+    #title-text {
+        color: DarkBlue;
+        font-family: Georgia;
+        text-align: center;
+    }
+
+/* ---- Name English Input ---- */
+    #name-english-input {
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        text-align: center;
+        min-width: 220px;
+    }
+
+    #name-english-input-div {
+        text-align: center;
+        vertical-align: center;
+        /*position: relative;*/
+        /*height: 35px;*/
+    }
+
+    .input-btn {
+        background-color: Gainsboro;
+        color: Black;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-top: 5px;
+        margin-bottom: 34px;
+        height: 25px;
+        width: 55px;
+        padding: 1px;
+        /*position: relative;*/
+        /*top: -20px;*/
+    }
+
+    .modify-btn {
+        background-color: Gainsboro;
+        margin: 15px;
+        color: Black;
+    }
+
+    #modify-pronunciation-btn-holder {
+        text-align: center;
+    }
+
+    #modify-pronunciation-btn {
+
+    }
+
+/* ---- Table showing pronunciation codes ---- */
+    #pronunc-table {
+        border-collapse: separate;
+        border-spacing: 10px;
+    }
+
+    #pronunc-table tr {
+        height: 35px;
+    }
+
+    .pronunc-label {
+        text-align: right;
+    }
+
+    .pronunc-output-cell {
+        font-size: 110%;
+        font-family: Georgia;
+        text-align: center;
+    }
+
+/* ---- Keyboard for manually entering pronunciation info ---- */
+    .pronunc-box {
+        /*border: solid 1px Navy;*/
+        margin: 5px;
+        text-align: center;
+    }
+
+    #keys-qwerty {
+        text-align: center;
+    }
+
+    .qwerty-btn {
+        background-color: Gainsboro;
+        
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-left: 2px;
+        margin-right: 2px;
+
+        width: 35px;
+        height: 26px;
+        padding-top: 3px;
+        padding-bottom: 1px;
+        padding-left: 1px;
+        padding-right: 1px;
+        vertical-align: center;
+    }
+
+    .qwerty-btn-txt {
+        color: Black;
+        font-size: 125%;
+        font-weight: 900;
+        line-height: 1;
+        /*margin-bottom: 15px;*/
+    }
+
+    .qwerty-disabled {
+        width: 20px;
+        background-color: LightSteelBlue;
+        pointer-events: none;
+        cursor: not-allowed;
+        border: 0px;
+    }
+
+    #space-bar-btn {
+        width: 100px;
+        padding-top: 3px;
+        padding-bottom: 1px;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    #ng-er-spacer {
+        width: 150px;
+        background-color: Azure;
+        pointer-events: none;
+        cursor: not-allowed;
+        border: 0px;
+    }
+
+    .pronunc-btn {
+        background-color: Gainsboro;
+        color: Black;
+
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-left: 2px;
+        margin-right: 2px;
+        width: 80px;
+        height: 26px;
+
+        padding-top: 3px;
+        padding-bottom: 1px;
+        padding-left: 1px;
+        padding-right: 1px;
+        
+        vertical-align: center;
+    }
+
+    .pronunc-btn-key {
+        line-height: 1;
+        font-size: 125%;
+        font-weight: 900;
+    }
+
+    .pronunc-btn-example {
+        line-height: 1;
+        font-weight: 800;
+        margin-right: 1px;
+        margin-left: 1px;
+        font-size: 110%;
+        color: Red;
+    }
+
+/*    .pronunc-stop {
+        background-color: LightSkyBlue;
+    }
+*/
+    .pronunc-affricate,
+    .pronunc-fricative {
+        background-color: PaleGoldenRod;
+    }
+
+/*    .pronunc-affricate {
+        background-color: Pink;
+    }
+*/
+    .pronunc-liquid {
+        background-color: LightSalmon;
+    }
+
+/*    .pronunc-nasal {
+        background-color: Salmon;
+    }
+*/
+    .pronunc-nasal,
+    .pronunc-r_colored {
+        background-color: LightPink;
+    }
+
+/*    .pronunc-semi_vowel {
+        background-color: LightGreen;
+    }
+*/
+    .pronunc-monophthong {
+        background-color: LightGreen;
+    }
+
+    .pronunc-diphthong {
+        background-color: LightSkyBlue;
+    }
+
+/* ---- Table showing Transliteration outputs ---- */
+    .translit-output-english,
+    .translit-output {
+        font-size: 150%;
+        font-family: Georgia;
+        text-align: center;
+        min-width: 200px;
+    }
+
+    .ltr-output {
+
+    }
+
+    .rtl-output {
+
+    }
+
+    .output-label {
+        font-style: italic;
+        font-size: 90%;        
+    }
+
+    #output-hebrew {
+        font-family: Times New Roman;
+        font-size: 200%;
+        /*font-weight: 600;*/
+        /*text-align: right;*/
+    }
+
+    #output-table {
+        border-collapse: separate;
+        border-spacing: 10px;
+    }
+
+    #output-table tr {
+        height: 35px;
+    }

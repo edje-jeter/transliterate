@@ -1,0 +1,476 @@
+
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+<!-- Bootstrap Core CSS -->
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Primary CSS file -->
+<link href="{% static 'css/transliterate_css.css' %}" rel="stylesheet">
+
+<body>
+{% block body %}
+    
+    <div class="container">
+    <div class="row">
+    <div class="box">
+
+<!-- Title ............................................... -->
+    <div id='title-text'
+         class='title col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-sm-12
+                col-xs-12'>
+        <hr>
+        <h1>Transliterate Names</h1>
+        <hr>
+    </div><!-- /#title-text -->
+
+<!-- Left Side: Name Input, Pronunciation Codes, etc .......... -->
+    <div id='row-for-output' class='row'>
+    <div id='pronunciation-output'
+         class='col-lg-4 col-lg-offset-2
+                col-md-4 col-md-offset-2
+                col-sm-6'>
+
+    <!-- Name Input Box -->
+        <div id='name-english-input-div'>
+            <textarea id="name-english-input"
+                      rows="1"
+                      placeholder="Type your name in English here."
+                      ></textarea>
+            <a id='input-clear-btn'
+               class='btn btn-primary input-btn'
+               role='button'>Clear</a>
+
+        </div><!-- /#name-english-input-div -->
+
+    <!-- Pronunciation Output -->
+        <table id='pronunc-table' class='hidden'>
+            <tr><td class='pronunc-label'>Respelling: </td>
+                <td class='pronunc-output-cell'
+                    >/ <span id='pronunc-respell'
+                             class='pronunc-output'></span> /</td></tr>
+            <tr><td class='pronunc-label'>Arpabet: </td>
+                <td class='pronunc-output-cell'
+                    >/ <span id='pronunc-arpabet'
+                             class='pronunc-output'></span> /</td></tr>
+            <tr><td class='pronunc-label'>IPA: </td>
+                <td class='pronunc-output-cell'
+                    >/ <span id='pronunc-ipa'
+                             class='pronunc-output'></span> /</td></tr>
+        </table><!-- /#pronunc-table -->
+
+    <!-- Modify-Pronunciation Button -->
+        <div id='modify-pronunciation-btn-holder'>
+            <a id='modify-pronunciation-btn'
+               class='btn btn-primary modify-btn'
+               role='button'>Enter Pronunciation Directly</a>
+
+            <a id='keyboard-hide-btn'
+               class='btn btn-primary modify-btn hidden'
+               role='button'>Hide Keyboard</a>
+        </div><!-- /#modify-pronunciation-btn-holder -->
+
+    <!-- Not-in-Database Warning -->
+        <div id='not-in-db-warning'
+             class='hidden'>
+            The name '<span id='not-in-db-name'></span>' 
+            is not in the database.
+            Please check the spelling or click the 
+            "Change or Add Pronunciation" button to 
+            manually enter the pronunciation.
+        </div><!-- /#not-in-database-warning -->
+
+    </div><!-- /#pronunciation-output -->
+    <!-- End Left Side -->
+
+<!-- Right Side: Transliteration Output .......................... -->
+    <div id='transliteration-output'
+         class='col-lg-4 col-md-4 col-sm-6'>
+
+        <table id='output-table'>
+        <tr><td id='output-english'
+                class='translit-output-english'></td>
+            <td class='output-label'>(English)</td></tr>
+        <tr><td id='output-deseret'
+                class='translit-output ltr-output'></td>
+            <td class='output-label'>(Deseret)</td></tr>
+        <tr><td id='output-greek-U'
+                class='translit-output ltr-output'></td>
+            <td class='output-label'>(Greek upper)</td></tr>
+        <tr><td id='output-greek-m'
+                class='translit-output ltr-output'></td>
+            <td class='output-label'>(Greek lower)</td></tr>
+        <tr><td id='output-hebrew'
+                class='translit-output rtl-output'></td>
+            <td class='output-label'>(Hebrew)</td></tr>
+        <tr><td id='output-arabic'
+                class='translit-output rtl-output'></td>
+            <td class='output-label'>(Arabic)</td></tr>
+        </table><!-- /#output-table -->
+
+    </div><!-- /#transliteration-output -->
+    <!-- End Right Side -->
+    </div><!-- /#row-for-output -->
+
+<!-- Bottom: Pronunciation Keyboard ..................... -->
+    <div id='pronunciation-input'
+         class='row hidden'>
+
+    <div id='keyboard'
+         class='col-md-10 col-md-offset-1'>
+    <div id='row-for-keys' class='row'>
+
+        <div id='keys-qwerty' class='col-sm-6'>
+            <div id='qwerty-top' class='row'>
+            {% autoescape off %}
+            {% for phone in qwerty_top %}
+                {% if phone.0 %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% else %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn qwerty-disabled'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% endif %}
+            {% endfor %}
+            {% endautoescape%}
+            </div><!-- /#qwerty-top -->
+
+            <div id='qwerty-mid' class='row'>
+            {% autoescape off %}
+            {% for phone in qwerty_mid %}
+                {% if phone.0 %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% else %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn qwerty-disabled'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% endif %}
+            {% endfor %}
+            {% endautoescape%}
+            </div>
+
+            <div id='qwerty-bot' class='row'>
+            {% autoescape off %}
+            {% for phone in qwerty_bot %}
+                {% if phone.0 %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% else %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary qwerty-btn qwerty-disabled'
+                       role='button'
+                       ><span class='qwerty-btn-txt'
+                            >{{ phone.1 }}</span></a>
+                {% endif %}
+            {% endfor %}
+            {% endautoescape%}
+            </div>
+
+            <div id='row-for-space-bar' class='row'>
+                <a id='space-bar-btn'
+                   class='btn btn-primary pronunc-btn'
+                   role='button'>Space</a>
+            </div><!-- /#row-for-space-bar -->
+
+            <div id='ng-and-er' class='row'>
+                {% autoescape off %}
+                {% for phone in ng_and_er %}
+                    {% if phone.0 %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                       role='button'
+                       ><span class='pronunc-btn-key'
+                            >{{ phone.1 }} </span><span
+                            >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                            >{{ phone.3 }}</span><span
+                            >{{ phone.4 }}</span></a>
+                    {% else %}
+                    <a id='ng-er-spacer'
+                       class='btn btn-primary'
+                       role='button'></a>
+                    {% endif %}
+                {% endfor %}
+                {% endautoescape%}
+            </div><!-- /#ng-and-er -->
+
+        </div><!-- /#keys-qwerty -->
+
+        <div id='keys-non-qwerty' class='col-sm-6'>
+        <div id='row-for-keys-non-qwerty' class='row'>
+
+        <div id='keys-fricative' class='col-xs-3'>
+            {% autoescape off %}
+            {% for phone in fricative %}
+                <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   role='button'
+                   ><span class='pronunc-btn-key'
+                        >{{ phone.1 }} </span><span
+                        >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                        >{{ phone.3 }}</span><span
+                        >{{ phone.4 }}</span></a>
+            {% endfor %}
+            {% endautoescape%}
+        </div><!-- /#keys-fricative -->
+
+        <div id='keys-monophthong' class='col-xs-6'>
+        <div id='row-for-monophthongs' class='row'>
+        <div id='keys-monophthong1' class='col-xs-6'>
+            {% autoescape off %}
+            {% for phone in monophthong1 %}
+                <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   role='button'
+                   ><span class='pronunc-btn-key'
+                        >{{ phone.1 }} </span><span
+                        >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                        >{{ phone.3 }}</span><span
+                        >{{ phone.4 }}</span></a>
+            {% endfor %}
+            {% endautoescape%}
+        </div><!-- /#keys-monophthong1 -->
+
+        <div id='keys-monophthong2' class='col-xs-6'>
+            {% autoescape off %}
+            {% for phone in monophthong2 %}
+                <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   role='button'
+                   ><span class='pronunc-btn-key'
+                        >{{ phone.1 }} </span><span
+                        >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                        >{{ phone.3 }}</span><span
+                        >{{ phone.4 }}</span></a>
+            {% endfor %}
+            {% endautoescape%}
+        </div><!-- /#keys-monophthong2 -->
+        </div><!-- /#row-for-monophthongs -->
+        </div><!-- /#keys-monophthong -->
+
+        <div id='keys-diphthong' class='col-xs-3'>
+            {% autoescape off %}
+            {% for phone in diphthong %}
+                <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   role='button'
+                   ><span class='pronunc-btn-key'
+                        >{{ phone.1 }} </span><span
+                        >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                        >{{ phone.3 }}</span><span
+                        >{{ phone.4 }}</span></a>
+            {% endfor %}
+            {% endautoescape%}
+        </div><!-- /#keys-diphthong -->
+
+        </div><!-- /#row-for-keys-non-qwerty -->
+        </div><!-- /#keys-non-qwerty -->
+
+        </div><!-- /#row-for-keys -->
+        </div><!-- /#keyboard -->
+
+        {% comment %} non-qwerty layout
+        <div id='pronunc-consonants'
+             class='pronunc-box'>
+            <div id='pronunc-stops' class='col-md-8 col-md-offset-2'>
+                {% autoescape off %}
+                {% for phone in arpa_btns %}
+                    <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
+                       class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                       role='button'
+                       ><span class='pronunc-btn-key'
+                            >{{ phone.1 }} </span><span
+                            >{{ phone.2 }}</span><span class='pronunc-btn-example'
+                            >{{ phone.3 }}</span><span
+                            >{{ phone.4 }}</span></a>
+                {% endfor %}
+                {% endautoescape%}
+            </div><!-- /#pronunc-stops -->
+        </div><!-- /#pronunc-consonants -->
+        {% endcomment %}
+
+    </div><!-- /#pronunciation-input -->
+
+    <div id='intro-text'
+         class="col-lg-8 col-lg-offset-2
+                col-md-8 col-md-offset-2
+                col-sm-12
+                col-xs-12">
+        <hr>
+        Enter the name in English in the box on the left. 
+        Transliterations of the name will appear in various
+        scripts at the right. If the name is not in the database 
+        or the pronunciation is different than the one you want, 
+        use the buttons to enter the approximate pronunciation.<br><br>
+        Transliteration is complicated and subjective: 
+        CONSULT AN EXPERT BEFORE TATOOING!
+        <hr>
+    </div><!-- /#intro-text -->
+
+    </div><!-- /.box -->
+    </div><!-- /.row -->
+    </div><!-- /.container -->
+
+<!-- Javascript ............................................... -->
+<script src="{% static 'js/jquery.js' %}"></script>
+
+<script type="text/javascript">
+
+// Initialize variables
+    var arpaList = [];
+
+// Accept Pronunciation inputs from Pronunc Keyboard
+    var enterPronuncFromKeyboard = function(keyID) {
+        var arpaPhone = keyID.split('-')[1];
+        var reSpell = keyID.split('-')[2];
+        var ipaSymbol = keyID.split('-')[3];
+
+        $('#pronunc-respell').append(reSpell + ' ');
+        $('#pronunc-arpabet').append(arpaPhone + ' ');
+        $('#pronunc-ipa').append(ipaSymbol + ' ');
+
+        arpaList.push(arpaPhone);
+
+        $.ajax({
+            type: 'GET',
+            url: '/name_func/',
+            data: { arpa_phone: arpaPhone },
+            error: function() {},
+            success: function(data) {
+                $('#output-deseret').append(data[0]);
+                $('#output-deseret-m').append(data[1]);
+                $('#output-greek-U').append(data[2]);
+                $('#output-greek-m').append(data[3]);
+                $('#output-hebrew').append(data[4]);
+                $('#output-arabic').append(data[5]);
+
+            }
+        });
+    };
+
+// on document load: 
+    $(function() {
+
+        // Receive name in English
+        $('#name-english-input').focus();
+
+        $('#name-english-input').on('keyup', function() {
+            var englishInput = $('#name-english-input').val();
+            console.log(englishInput);
+            $('#output-english').text(englishInput);
+            $('#modify-pronunciation-btn').removeClass('hidden');
+            if (englishInput == '') { clearOutputsExceptEnglish() };
+            nameBatchProcess(englishInput);
+        });
+
+        $('#input-clear-btn').on('click', function() {
+            clearOutputsExceptEnglish();
+            clearEnglish();
+            $('#not-in-db-warning').addClass('hidden');
+        });
+
+    // Enter pronunciation values
+        $('#modify-pronunciation-btn').on('click', function() {
+            $('#pronunciation-input').removeClass('hidden');
+            $('#modify-pronunciation-btn').addClass('hidden');
+            $('#keyboard-hide-btn').removeClass('hidden');
+            $('#pronunc-table').removeClass('hidden');
+            clearOutputsExceptEnglish();
+        });
+
+        $('#keyboard-hide-btn').on('click', function() {
+            $('#pronunciation-input').addClass('hidden');
+            $('#modify-pronunciation-btn').removeClass('hidden');
+            $('#keyboard-hide-btn').addClass('hidden');
+            $('#pronunc-table').addClass('hidden');
+            $('#name-english-input').focus();
+        });
+
+        $('.pronunc-btn').on('click', function() {
+            var keyID = this.id;
+            enterPronuncFromKeyboard(keyID);
+        });
+
+        $('.qwerty-btn').on('click', function() {
+            var keyID = this.id;
+            enterPronuncFromKeyboard(keyID);
+        });
+    });
+
+// Reset pronunc and translit outputs to blank; leave English
+    function clearOutputsExceptEnglish() {
+        $('.translit-output').text('');
+        $('.pronunc-output').text('');
+        $('#name-english-input').focus();
+        $('#not-in-db-warning').addClass('hidden');
+    };
+
+// Reset English input and output to blank
+    function clearEnglish() {
+        $('#name-english-input').val('');
+        $('.translit-output-english').text('');
+        $('#name-english-input').focus();
+    };
+
+
+// batchProcess: Function to deal with the whole input at one time
+    function nameBatchProcess(englishInput) {
+
+        $.ajax({
+            type: 'GET',
+            url: '/name_batch_process/',
+            data: {input: englishInput},
+            error: function() {},
+            success: function(data) {
+                var oldArpaSoFar = $('#pronunc-arpabet').text();
+                var newArpa = data[0];
+
+                if(newArpa == "NO MATCH") {
+                    $('.ltr-output').append('_');
+                    $('.rtl-output').prepend('_');
+                    $('.pronunc-output').append(' __');
+
+                    $('#not-in-db-warning').removeClass('hidden');
+                    $('#not-in-db-name').text(englishInput);
+                    // $('#pronunciation-input').removeClass('hidden');
+
+                } else {
+                    $('#not-in-db-warning').addClass('hidden');
+
+                    $('#pronunc-arpabet').text(data[0]);
+                    $('#pronunc-respell').text(data[1]);
+                    $('#pronunc-ipa').text(data[2]);
+
+                    $('#output-deseret').text(data[7]);
+                    $('#output-greek-U').text(data[3]);
+                    $('#output-greek-m').text(data[4]);
+                    $('#output-hebrew').text(data[5]);
+                    $('#output-arabic').text(data[6]);
+                };
+            }
+        });
+    };
+
+// Change or Add Pronunciation
+
+
+</script>
+
+{% endblock body %}
+</body>

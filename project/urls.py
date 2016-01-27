@@ -7,6 +7,9 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^input_output/$', 'main.views.input_output'),
+    url(r'^arpabet_entry/$', 'main.views.arpabet_entry', name='arpabet_entry'),
+    url(r'^name_func/$', 'main.views.name_func', name='name_func'),
+    url(r'^name_batch_process/$', 'main.views.name_batch_process', name='name_batch_process'),
     url(r'^continuous_process/$', 'main.views.continuous_process', name='continuous_process'),
     url(r'^batch_process/$', 'main.views.batch_process', name='batch_process'),
 
