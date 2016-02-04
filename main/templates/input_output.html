@@ -7,65 +7,173 @@
 
 <!-- Primary CSS file -->
 <link href="{% static 'css/transliterate_css.css' %}" rel="stylesheet">
+
 <body>
 {% block body %}
     
-    <div class="container">
-        <div class="row">
-            <div class="box">
+<div class="container">
+<div class="row">
+<div class="box">
 
-                <div id='title-text'
-                     class='title col-lg-8 col-lg-offset-2
-                            col-md-10 col-md-offset-1
-                            col-sm-12
-                            col-xs-12'>
-                    <hr>
-                    <h1>Transliterate English to Deseret</h1>
-                    <hr>
-                </div><!-- /#title-text -->
+<!-- Title ...................................................... -->
+    <div id='row-for-title' class='row'>
+        <div id='title-text'
+             class='title col-lg-8 col-lg-offset-2
+                    col-md-10 col-md-offset-1'>
+            <hr>
+            <h1>Transliterate English to Deseret</h1>
+            <hr>
+        </div><!-- /#title-text -->
+    </div><!-- /#row-for-title -->
 
-                <div id='english-input-div'>
-                    <br>
-                    <textarea id="english-input"
-                              rows="8"
-                              placeholder="Type English here."
-                              class="col-lg-3 col-lg-offset-2
-                                     col-md-4 col-md-offset-1
-                                     col-sm-12
-                                     col-xs-12"></textarea>
-                </div><!-- /#english-input-div -->
+<!-- Input/Output row ........................................... -->
+    <div id='row-for-input-output' class='row'>
+        <div id='english-input-div'
+             class="col-lg-3 col-lg-offset-2
+                    col-md-4 col-md-offset-1">
+            <textarea id="english-input"
+                      rows="6"
+                      placeholder="Type English here."
+                      class='col-xs-12'></textarea>
+        </div><!-- /#english-input-div -->
 
-                <div id="deseret-output-div"
-                     class="col-lg-5
-                            col-md-6
-                            col-sm-12
-                            col-xs-12">
-                    <h5 id="deseret-output"></h5>
-                </div><!-- /#deseret-output-div -->
+        <div id="deseret-output-div"
+             class="col-lg-4
+                    col-md-5
+                    col-sm-12
+                    col-xs-12">
+            <h5 id="deseret-output"></h5>
+        </div><!-- /#deseret-output-div -->
 
-                <div id='intro-text'
-                     class="col-lg-8 col-lg-offset-2
-                            col-md-10 col-md-offset-1
-                            col-sm-12
-                            col-xs-12">
-                    <hr>
-                    Enter text in English in the box on the left; 
-                    Deseret text will appear in the box on the right.<br>
-                    Allowable pronunciation symbols are: , . ? ! ' " ( )<br>
-                    Note that hyphens and non-English and/or accented letters are not viable at this point.<br>
-                    The only capitalization patterns are all-caps, no-caps, or initial caps. Maximum length is 200 characters.
-                    <hr>
-                </div><!-- /#intro-text -->
+        <div id='col-for-clear-btn'
+             class='col-md-1'>
+            <a id='input-clear-btn'
+               class='btn btn-primary input-btn input-clear-btn-class'
+               role='button'>Clear</a>
+        </div><!-- /#col-for-clear-btn -->
 
-            </div><!-- /.box -->
-        </div><!-- /.row -->
-    </div><!-- /.container -->
+    </div><!-- /#row-for-input-output -->
 
+<!-- Fault Output .............................. -->
+
+{% comment %}
+    <a id='add-words-btn'
+       class='btn btn-primary'
+       role='button'>Add Words</a>
+
+    <a id='hide-keyboard-btn'
+       class='btn btn-primary hidden'
+       role='button'>Hide Keyboard</a>
+{% endcomment %}
+
+    <div id='fault-output' class='row hidden'>
+
+        <div id='fault-instructions'
+             class='col-lg-2 col-lg-offset-2
+                    col-md-2 col-md-offset-1'>
+            Use the keys below to enter the
+            pronunciation of "<span id='fault-instruc-word'
+            ></span>". Click "Save" 
+            to add it to the database.
+        </div><!-- /#fault-instructions -->
+
+
+        <div id='fault-display'
+             class='col-md-4'>
+            
+            <div id='fault-display-word'></div>
+
+            <!-- Pronunciation Output -->
+            <table id='fault-table'>
+                <tr><td class='fault-label'>Respelling: </td>
+                    <td class='fault-output-cell'
+                        >/ <span id='fault-respell'
+                                 class='fault-output'
+                        ></span><span id='fault-respell'></span> /</td></tr>
+                <tr class='hidden'><td class='fault-label'>Arpabet: </td>
+                    <td class='fault-output-cell'
+                        >/ <span id='fault-arpabet'
+                                 class='fault-output'
+                        ></span><span id='fault-arpabet'></span> /</td></tr>
+                <tr><td class='fault-label'>IPA: </td>
+                    <td class='fault-output-cell'
+                        >/ <span id='fault-ipa'
+                                 class='fault-output'
+                        ></span><span id='fault-ipa'></span> /</td></tr>
+            </table><!-- /#pronunc-table -->
+        </div><!-- /#fault-display -->
+
+        <div id='fault-buttons'
+             class='col-md-2'>
+
+            <a id='fault-clear-btn'
+               class='btn btn-primary fault-btn'
+               role='button'>Clear</a>
+            <br>
+            <a id='fault-cancel-btn'
+               class='btn btn-primary fault-btn'
+               role='button'>Cancel</a>
+            <br>
+            <a id='fault-save-btn'
+               class='btn btn-primary fault-btn'
+               role='button'>Save</a>
+
+        </div><!-- /#fault-buttons -->
+
+    </div><!-- /#fault-output -->
+
+<!-- Keyboard ................................................... -->
+    <div id='row-for-keyboard' class='row hidden'>
+        
+        <div id='col-for-keyboard'>
+
+            <div id='qwerty-btn-box'>
+                <div id='qwerty-ng-and-er' class='qwerty-row'></div>
+                <div id='qwerty-space' class='qwerty-row'></div>
+                <div id='qwerty-top' class='qwerty-row'></div>
+                <div id='qwerty-mid' class='qwerty-row'></div>
+                <div id='qwerty-bot' class='qwerty-row'></div>
+            </div><!-- /#qwerty-btn-box -->
+
+            <div id='combo-btn-box'>
+                <div id='combo-fricative' class='combo-col'></div>
+                <div id='combo-monophthong1' class='combo-col'></div>
+                <div id='combo-monophthong2' class='combo-col'></div>
+                <div id='combo-diphthong' class='combo-col'></div>
+            </div><!-- /#combo-btn-box -->
+
+        </div><!-- /#col-for-keyboard -->
+
+    </div><!-- /#row-for-keyboard -->
+
+<!-- Instruction Text ........................................... -->
+    <div id='intro-text'
+         class="col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-sm-12
+                col-xs-12">
+        <hr>
+        Enter text in English in the box on the left; 
+        Deseret text will appear in the box on the right.<br>
+        Allowable pronunciation symbols are: , . ? ! ' " ( )<br>
+        Note that hyphens and non-English and/or accented letters are not viable at this point.<br>
+        The only capitalization patterns are all-caps, no-caps, or initial caps. Maximum length is 200 characters.
+        <hr>
+    </div><!-- /#intro-text -->
+
+</div><!-- /.box -->
+</div><!-- /.row -->
+</div><!-- /.container -->
+
+<!-- JavaScript ................................................. -->
 <script src="{% static 'js/jquery.js' %}"></script>
 
 <script type="text/javascript">
 // Initialize variables
     var delayVar = "";
+    var arpaList = [];
+    var respellList = [];
+    var ipaList = [];
     // I need an extra line so I can hide this section
 
 // continuousProcess: Function to deal with one word at a time
@@ -118,20 +226,246 @@
             data: {input: in_orig},
             error: function() {},
             success: function(data) {
-                var outputText = data;
+                var outputText = data[0];
+                var faultList = data[1]
                 $('#deseret-output').html(outputText.replace(/\r\n?|\n/g, '<br />'));
+                $('#fault-display-word').text('');
+                mouseoverFaults();
+                clickFaults();
             }
         });
     }
 
-// Logic to deal with events, timing, etc
-    $('#english-input').focus();
-    $('#english-input').on('keydown', function() {
-        clearTimeout(delayVar);
-        continuousProcess();
-        delayVar = setTimeout(batchProcess, 500);
+// Prime Input Clear Button
+    function primeInputClearBtn() {
+        $('#input-clear-btn').on('click', function() {
+            $('#english-input').val('');
+            $('#deseret-output').text('');
+            hideKeyboard();
+            hideFaultRow();
+            resetFaultPhones();
+            $('#english-input').focus();
+        });
+    };
+
+// Highlight Faults on mouseover
+    function mouseoverFaults() {
+        $('.fault-class').on('mouseover', function() {
+            var faultID = this.id;
+            $('#' + faultID.replace('div-', '')).
+                addClass('fault-highlight');
+            $(this).addClass('fault-highlight');
+        });
+
+        $('.fault-class').on('mouseout', function() {
+            var faultID = this.id;
+            $('#' + faultID.replace('div-', '')).
+                removeClass('fault-highlight');
+            $(this).removeClass('fault-highlight');
+
+        });
+
+        $('.fault-underscore').on('mouseover', function() {
+            var faultID = this.id;
+            $(this).addClass('fault-highlight');
+            $('#' + faultID.replace('-', '-div-')).
+                addClass('fault-highlight');
+        });
+
+        $('.fault-underscore').on('mouseout', function() {
+            var faultID = this.id;
+            $(this).removeClass('fault-highlight');
+            $('#' + faultID.replace('-', '-div-')).
+                removeClass('fault-highlight');
+        });
+    };
+
+// Click on Faults to activate adding word to dictionary
+    function clickFaults() {
+        $('.fault-underscore').on('click', function() {
+            $(this).addClass('fault-highlight-perm');
+
+            faultWord = this.id.replace('fault-','');
+            $('#fault-display-word').text(faultWord + ': ');
+            $('#fault-instruc-word').text(faultWord);
+
+            showKeyboard();
+            showFaultRow();
+        });
+    };
+
+// Make keyboard buttons
+    var makeKeyboardButton = function(phone) {
+        if ( phone[8].indexOf('pronunc') > -1 ) {
+            keyClasses = "><span class='pronunc-btn-key'" +
+                ">" + phone[1] + " </span><span" +
+                ">" + phone[2] + "</span><span class='pronunc-btn-example'" +
+                ">" + phone[3] + "</span><span" +
+                ">" + phone[4] + "</span></a>";
+        } else if ( phone[8].indexOf('back') > -1 ) {
+            keyClasses = "><span class='space-row-btn-txt'>" +
+                phone[1] + "</span></a>";
+        } else {
+            keyClasses = "><span class='qwerty-btn-txt'>" +
+                phone[1] + "</span></a>";
+        };
+
+        $('#' + phone[7]).append(
+            "<a id='btn-" + phone[0] + "-"
+            + phone[1] + "-" + phone[6] + "' " +
+            "class='btn btn-primary " + phone[8] + "' " +
+            "role='button'" + keyClasses
+        )
+
+        // $('.keyboard-btn').on('mouseover', function(e) {
+        //     console.log('x: ' + e.pageX);
+        //     console.log('y: ' + e.pageY);
+        // });
+    }
+
+// Generate Keyboard and activate Fault Clear and Cancel Btns
+    var generateKeyboard = function() {
+        $.ajax({
+            type: 'GET',
+            url: '/generate_keyboard/',
+            data: {  },
+            error: function() {},
+            success: function(data) {
+                for(i = 0; i < data.length; i++) {
+                    makeKeyboardButton(data[i]);
+                };
+
+                $('.keyboard-btn').on('click', function () {
+                    var keyID = this.id;
+                    acceptPronuncFromKeyboard(keyID);
+                });
+
+                primeKeyboardBackspaceBtn();
+                primeFaultClearBtn();
+                primeFaultCancelBtn();
+                primeFaultSaveBtn();
+            }
+        });
+    };
+
+// Show keyboard
+    function showKeyboard() {
+        $('#row-for-keyboard').removeClass('hidden');
+        $('#add-words-btn').addClass('hidden');
+        $('#hide-keyboard-btn').removeClass('hidden');
+    };
+
+// Hide keyboard
+    function hideKeyboard() {
+        $('#row-for-keyboard').addClass('hidden');
+        $('#add-words-btn').removeClass('hidden');
+        $('#hide-keyboard-btn').addClass('hidden');        
+    };
+
+// accept Pronunciation from Keyboard
+    function acceptPronuncFromKeyboard(keyID) {
+        var arpaPhone = keyID.split('-')[1];
+        var reSpell = keyID.split('-')[2];
+        var ipaSymbol = keyID.split('-')[3];
+
+        $('#fault-respell').append(reSpell + ' ');
+        $('#fault-ipa').append(ipaSymbol + ' ');
+
+        arpaList.push(arpaPhone);
+        respellList.push(reSpell);
+        ipaList.push(ipaSymbol);
+
+        console.log(arpaList);
+    };
+
+// Show Fault row (instruc, output, buttons)
+    function showFaultRow() {
+        $('#fault-output').removeClass('hidden');
+    };
+
+// Hide Fault Row
+    function hideFaultRow() {
+        $('#fault-output').addClass('hidden');
+        $('#fault-display-word').text('');
+    };
+
+// Reset Phone lists
+    function resetFaultPhones() {
+        $('#fault-respell').text('');
+        $('#fault-ipa').text('');
+        arpaList.length = 0;
+        respellList.length = 0;
+        ipaList.length = 0;
+    };
+
+// prime Fault Cancel button
+    function primeFaultCancelBtn() {
+        $('#fault-cancel-btn').on('click', function () {
+            hideKeyboard();
+            hideFaultRow();
+            faultWord2 = $('#fault-display-word').text().replace(': ', '');
+            $('#fault-' + faultWord2).removeClass('fault-highlight-perm');
+            resetFaultPhones();
+            clickFaults();
+        });
+    };
+
+// prime Fault Clear Button
+    function primeFaultClearBtn() {
+        $('#fault-clear-btn').on('click', function() {
+            resetFaultPhones();
+        });
+    };
+
+// prime Fault Backspace Button
+    function primeKeyboardBackspaceBtn() {
+        $('.backspace-btn').on('click', function() {
+            respellList = respellList.slice(0, respellList.length -1);
+            ipaList = ipaList.slice(0, ipaList.length - 1);
+
+            respellStr = respellList.join(' ');
+            ipaStr = ipaList.join(' ');
+
+            $('#fault-respell').text(respellStr);
+            $('#fault-ipa').text(ipaStr);
+        });
+    };
+
+// prime Fault Save Button
+    function primeFaultSaveBtn() {
+        $('#fault-save-btn').on('click', function() {
+            console.log('fault save btn clicked');
+            arpaStr = arpaList.join(' ');
+            console.log('arpaStr: ' + arpaStr);
+            newWord = $('#fault-display-word').text().replace(': ', '');
+
+            $.ajax({
+                type: 'GET',
+                url: '/add_word_to_dict/',
+                data: { new_arpa_str: arpaStr,
+                        new_word: newWord },
+                error: function() {},
+                success: function(data) {
+                    console.log('fault save ajax executed');
+                }
+            });
+        });
+    };
+
+// On Document Load: 
+    $(function() {
+        generateKeyboard();
+        primeInputClearBtn();
+
+        // Logic to deal with events, timing, etc
+        $('#english-input').focus();
+        $('#english-input').on('keydown', function() {
+            clearTimeout(delayVar);
+            continuousProcess();
+            delayVar = setTimeout(batchProcess, 500);
+        });
     });
-        
+
 </script>
 
 {% endblock body %}

@@ -50,15 +50,18 @@
             <tr><td class='pronunc-label'>Respelling: </td>
                 <td class='pronunc-output-cell'
                     >/ <span id='pronunc-respell'
-                             class='pronunc-output'></span> /</td></tr>
+                             class='pronunc-output'
+                    ></span><span id='tent-respell'></span> /</td></tr>
             <tr><td class='pronunc-label'>Arpabet: </td>
                 <td class='pronunc-output-cell'
                     >/ <span id='pronunc-arpabet'
-                             class='pronunc-output'></span> /</td></tr>
+                             class='pronunc-output'
+                    ></span><span id='tent-arpabet'></span> /</td></tr>
             <tr><td class='pronunc-label'>IPA: </td>
                 <td class='pronunc-output-cell'
                     >/ <span id='pronunc-ipa'
-                             class='pronunc-output'></span> /</td></tr>
+                             class='pronunc-output'
+                    ></span><span id='tent-ipa'></span> /</td></tr>
         </table><!-- /#pronunc-table -->
 
     <!-- Modify-Pronunciation Button -->
@@ -98,14 +101,14 @@
             <td class='output-label'>(Deseret)</td></tr>
         <tr><td id='output-greek-U'
                 class='translit-output ltr-output'></td>
-            <td class='output-label'>(Greek upper)</td></tr>
+            <td class='output-label'>(Greek Up)</td></tr>
         <tr><td id='output-greek-m'
                 class='translit-output ltr-output'></td>
-            <td class='output-label'>(Greek lower)</td></tr>
+            <td class='output-label'>(Greek Low)</td></tr>
         <tr><td id='output-hebrew'
                 class='translit-output rtl-output'></td>
             <td class='output-label'>(Hebrew)</td></tr>
-        <tr><td id='output-arabic'
+        <tr id='row-arabic' class='hidden'><td id='output-arabic'
                 class='translit-output rtl-output'></td>
             <td class='output-label'>(Arabic)</td></tr>
         </table><!-- /#output-table -->
@@ -128,7 +131,7 @@
             {% for phone in qwerty_top %}
                 {% if phone.0 %}
                     <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                       class='btn btn-primary qwerty-btn'
+                       class='btn btn-primary keyboard-btn qwerty-btn'
                        role='button'
                        ><span class='qwerty-btn-txt'
                             >{{ phone.1 }}</span></a>
@@ -148,7 +151,7 @@
             {% for phone in qwerty_mid %}
                 {% if phone.0 %}
                     <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                       class='btn btn-primary qwerty-btn'
+                       class='btn btn-primary keyboard-btn qwerty-btn'
                        role='button'
                        ><span class='qwerty-btn-txt'
                             >{{ phone.1 }}</span></a>
@@ -168,7 +171,7 @@
             {% for phone in qwerty_bot %}
                 {% if phone.0 %}
                     <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                       class='btn btn-primary qwerty-btn'
+                       class='btn btn-primary keyboard-btn qwerty-btn'
                        role='button'
                        ><span class='qwerty-btn-txt'
                             >{{ phone.1 }}</span></a>
@@ -194,7 +197,7 @@
                 {% for phone in ng_and_er %}
                     {% if phone.0 %}
                     <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                       class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                       class='btn btn-primary keyboard-btn pronunc-btn pronunc-{{ phone.5 }}'
                        role='button'
                        ><span class='pronunc-btn-key'
                             >{{ phone.1 }} </span><span
@@ -219,7 +222,7 @@
             {% autoescape off %}
             {% for phone in fricative %}
                 <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   class='btn btn-primary keyboard-btn pronunc-btn pronunc-{{ phone.5 }}'
                    role='button'
                    ><span class='pronunc-btn-key'
                         >{{ phone.1 }} </span><span
@@ -236,7 +239,7 @@
             {% autoescape off %}
             {% for phone in monophthong1 %}
                 <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   class='btn btn-primary keyboard-btn pronunc-btn pronunc-{{ phone.5 }}'
                    role='button'
                    ><span class='pronunc-btn-key'
                         >{{ phone.1 }} </span><span
@@ -251,7 +254,7 @@
             {% autoescape off %}
             {% for phone in monophthong2 %}
                 <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   class='btn btn-primary keyboard-btn pronunc-btn pronunc-{{ phone.5 }}'
                    role='button'
                    ><span class='pronunc-btn-key'
                         >{{ phone.1 }} </span><span
@@ -268,7 +271,7 @@
             {% autoescape off %}
             {% for phone in diphthong %}
                 <a id='btn-{{ phone.0 }}-{{ phone.1 }}-{{ phone.6 }}'
-                   class='btn btn-primary pronunc-btn pronunc-{{ phone.5 }}'
+                   class='btn btn-primary keyboard-btn pronunc-btn pronunc-{{ phone.5 }}'
                    role='button'
                    ><span class='pronunc-btn-key'
                         >{{ phone.1 }} </span><span
@@ -358,7 +361,7 @@
                 $('#output-greek-U').append(data[2]);
                 $('#output-greek-m').append(data[3]);
                 $('#output-hebrew').append(data[4]);
-                $('#output-arabic').append(data[5]);
+                // $('#output-arabic').append(data[5]);
 
             }
         });
@@ -372,7 +375,6 @@
 
         $('#name-english-input').on('keyup', function() {
             var englishInput = $('#name-english-input').val();
-            console.log(englishInput);
             $('#output-english').text(englishInput);
             $('#modify-pronunciation-btn').removeClass('hidden');
             if (englishInput == '') { clearOutputsExceptEnglish() };
@@ -391,6 +393,7 @@
             $('#modify-pronunciation-btn').addClass('hidden');
             $('#keyboard-hide-btn').removeClass('hidden');
             $('#pronunc-table').removeClass('hidden');
+            $('#row-arabic').addClass('hidden');
             clearOutputsExceptEnglish();
         });
 
@@ -400,6 +403,7 @@
             $('#keyboard-hide-btn').addClass('hidden');
             $('#pronunc-table').addClass('hidden');
             $('#name-english-input').focus();
+            $('#row-arabic').removeClass('hidden');
         });
 
         $('.pronunc-btn').on('click', function() {
@@ -411,6 +415,23 @@
             var keyID = this.id;
             enterPronuncFromKeyboard(keyID);
         });
+
+        $('.keyboard-btn').on('mouseover', function() {
+            var arpaPhone = this.id.split('-')[1];
+            var reSpell = this.id.split('-')[2];
+            var ipaSymbol = this.id.split('-')[3];
+
+            $('#tent-respell').text(' ' + reSpell);
+            $('#tent-arpabet').text(' ' + arpaPhone);
+            $('#tent-ipa').text(' ' + ipaSymbol);
+        });
+
+        $('.keyboard-btn').on('mouseout', function() {
+            $('#tent-respell').text('');
+            $('#tent-arpabet').text('');
+            $('#tent-ipa').text('');
+        });
+
     });
 
 // Reset pronunc and translit outputs to blank; leave English
@@ -427,7 +448,6 @@
         $('.translit-output-english').text('');
         $('#name-english-input').focus();
     };
-
 
 // batchProcess: Function to deal with the whole input at one time
     function nameBatchProcess(englishInput) {

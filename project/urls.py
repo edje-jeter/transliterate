@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^name_batch_process/$', 'main.views.name_batch_process', name='name_batch_process'),
     url(r'^continuous_process/$', 'main.views.continuous_process', name='continuous_process'),
     url(r'^batch_process/$', 'main.views.batch_process', name='batch_process'),
+    url(r'^add_word_to_dict/$', 'main.views.add_word_to_dict', name='add_word_to_dict'),
+    url(r'^generate_keyboard/$', 'main.views.generate_keyboard', name='generate_keyboard'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

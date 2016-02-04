@@ -435,12 +435,13 @@ def generate_keyboard(request):
         ['ZH', 'zh', 'A', 's', 'ia', 'fricative', u'\u0292', 'combo-fricative', 'keyboard-btn pronunc-btn pronunc-fricative'],
         ['TH', 'th', '', 'th', 'in', 'fricative', u'\u03B8', 'combo-fricative', 'keyboard-btn pronunc-btn pronunc-fricative'],
         ['DH', 'dh', '', 'th', 'e', 'fricative', u'\u00F0', 'combo-fricative', 'keyboard-btn pronunc-btn pronunc-fricative'],
-        # ['', 'Space', '', '', '', '', '', 'qwerty-space', 'space-back-row-btn space-bar-btn'],
+        ['', '', '', '', '', '', '', 'qwerty-space', 'space-spacer-left'],
+        ['', 'Space', '', '', '', '', '', 'qwerty-space', 'space-back-row-btn space-bar-btn'],
+        ['', '', '', '', '', '', '', 'qwerty-space', 'space-spacer-right'],
+        ['', u'\u232B' + ' Back', '', '', '', '', '', 'qwerty-space', 'space-back-row-btn backspace-btn'],
         ['NG', 'ng', 'si', 'ng', '', 'nasal', u'\u014B', 'qwerty-ng-and-er', 'keyboard-btn pronunc-btn pronunc-nasal'],
         ['', '', '', '', '', '', '', 'qwerty-ng-and-er', 'ng-er-spacer'],
         ['ER', 'er', 'h', 'er', '', 'r_colored', u'\u025D', 'qwerty-ng-and-er', 'keyboard-btn pronunc-btn pronunc-r_colored'],
-        ['', '', '', '', '', '', '', 'qwerty-ng-and-er', 'ng-er-spacer'],
-        ['', u'\u232B' + ' Back', '', '', '', '', '', 'qwerty-ng-and-er', 'space-back-row-btn backspace-btn'],
         ['AE', 'a', 'f', 'a', 'st', 'monophthong', u'\u00E6', 'combo-monophthong1', 'keyboard-btn pronunc-btn pronunc-monophthong'],
         ['AA', 'ah', 'f', 'a', 'ther', 'monophthong', u'\u0251', 'combo-monophthong1', 'keyboard-btn pronunc-btn pronunc-monophthong'],
         ['AO', 'aw', 'f', 'a', 'll', 'monophthong', u'\u0254', 'combo-monophthong1', 'keyboard-btn pronunc-btn pronunc-monophthong'],
@@ -459,41 +460,6 @@ def generate_keyboard(request):
     ]
 
     return JsonResponse(keyboard_list, safe=False)
-
-
-# ---- Add/Save new words to dictionary (via primeFaultSaveBtn in template JS)
-def add_word_to_dict(request):
-    print 'add_word_to_dict called'
-    new_arpa_str = request.GET.get('new_arpa_str', '')
-    print 'new_arpa_str: %s' % new_arpa_str
-    new_word = request.GET.get('new_word', '')
-    print 'new word: %s' % new_word
-
-    new_arpa_list = new_arpa_str.split(' ')
-    print new_arpa_list
-
-    # variant_check, created = DictCMU.objects.get_or_create(
-    #     entry__iexact=new_word)
-
-    # if created:
-    #     new_entry = variant_check
-    # else:
-    #     var_num = int(variant_check.num_of_variants) + 1
-    #     # need to add num_of_variants to models
-    #     # then make a routine to update the number of variants
-    #     # for the other entries
-    #     new_word_var = '%s(%s)' % (new_word, var_num)
-    #     new_entry = DictCMU.objects.create(entry=new_word_var)
-
-    # new_entry.source = '1'
-    # new_entry.phonemes_no_num = new_arpa_str
-    # new_entry.char_length = len(new_word)
-    # new_entry.list_length = len(new_arpa_list)
-    # new_entry.num_of_variants = var_num
-
-    # new_entry.save()
-
-    return HttpResponse(status=200)
 
 
 # ---- Name func: takes arpabet phone and returns unicode symbols -----

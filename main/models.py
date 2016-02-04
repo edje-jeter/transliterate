@@ -8,7 +8,7 @@ class DictCMU(models.Model):
     phonemes = models.CharField(max_length=255, null=True, blank=True)
     list_length = models.IntegerField(null=True, blank=True)
     phonemes_no_num = models.CharField(max_length=255, null=True, blank=True)
-    deseret = models.CharField(max_length=255, null=True, blank=True)
+    source = models.CharField(max_length=25, null=True, blank=True)
 
     def __unicode__(self):
         return self.entry
